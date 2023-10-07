@@ -1,8 +1,8 @@
+#!/usr/bin/env python3
+
+import argparse
 import sys, os, struct, code, binascii
 import serial, time, re, math
-
-DEFAULT_PORT = 'COM18'
-DEFAULT_BAUD = 115200
 
 GLITCH_DEFAULT_UART_TRIGGER_EXP_BYTE = b'\xD9'
 
@@ -25,9 +25,7 @@ RPC_COMMANDS = {
     "set_clk" : 0xd
 }
 
-uart = serial.Serial(DEFAULT_PORT, baudrate=DEFAULT_BAUD, timeout=0)
-
-def send_rpc_cmd(id, argv):
+def send_rpc_cmd(uart, id, argv):
     data = bytearray()
     for arg in argv:
         data.extend(struct.pack('<I', arg))
@@ -43,15 +41,43 @@ def send_rpc_cmd(id, argv):
     cont = cont.decode('utf-8').strip("!PC_")
     print(cont)
 
-if __name__ == "__main__":
-    if sys.argv[1] == "manual":
+def main(args):
+    uart = serial.Serial(args.port, baudrate=args.baud, timeout=0)
+    if args.rpc_cmd == "manual":
         uart.write(GLITCH_DEFAULT_UART_TRIGGER_EXP_BYTE)
-    elif sys.argv[1] in RPC_COMMANDS:
+    else:
         argv = []
-        for arg in sys.argv[2:]:
-            if arg.startswith('0x'):
-                argv.append(int(arg, 16))
-            else:
-                argv.append(int(arg))
-        send_rpc_cmd(sys.argv[1], argv)
+        for arg in args.rpc_args:
+            argv.append(int(arg, 0))
+        send_rpc_cmd(uart, args.rpc_cmd, argv)
     uart.close()
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="rpclient")
+    parser.add_argument(
+        "-p",
+        "--port",
+        required=True,
+        help="Serial port to use",
+    )
+    parser.add_argument(
+        "-b",
+        "--baud",
+        required=False,
+        default=115200,
+        help="Baud to use",
+    )
+    parser.add_argument(
+        "rpc_cmd",
+        metavar="RPC CMD",
+        choices=["manual", *RPC_COMMANDS.keys()],
+        help="RPC commands to send to Teensy",
+    )
+    parser.add_argument(
+        "rpc_args",
+        metavar="RPC ARG",
+        nargs="*",
+        help="RPC arguments to send to Teensy",
+    )
+    args = parser.parse_args()
+    main(args)
