@@ -1,0 +1,7 @@
+# build artifacts
+source/*.o
+source/*.ao
+
+# VS Code
+**/.vscode/
+**/.vscode-ctags

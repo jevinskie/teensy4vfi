@@ -10,7 +10,7 @@
 #include "include/rpc.h"
 #include "include/glitch.h"
 
-void main();
+int main();
 void test();
 
 void init() {
@@ -36,7 +36,7 @@ void init() {
         wfi();
 }
 
-void main() {
+int main() {
 
     test();
 
@@ -49,6 +49,8 @@ void main() {
         teensy_pad_logic_clear(TEENSY_PAD_ORANGE_LED, true);
         delay(0x10000);
     }
+
+    return 0;
 }
 
 void test() {

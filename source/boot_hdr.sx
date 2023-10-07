@@ -25,7 +25,13 @@ flashcfg: # size is 0x200, FlexSPI config block
     .byte 8
     .byte 0
     .word 0, 0
+#if defined(TEENSY_40)
     .word 0x00200000, 0
+#elif defined(TEENSY_41)
+    .word 0x00800000, 0
+#else
+#error unsupported MCU
+#endif
     .word 0, 0
     .word 0, 0, 0, 0
     .word 0
