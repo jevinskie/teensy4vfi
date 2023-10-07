@@ -21,8 +21,8 @@ output/test_teensy_40.hex: test_teensy_40.hex
 	mv test_teensy_40.hex output/test_teensy_40.hex
 
 output/test_teensy_41.hex: test_teensy_41.hex
-	-rm source/*_teensy_41.o
-	-rm source/*_teensy_41.ao
+	-rm -f source/*_teensy_41.o
+	-rm -f source/*_teensy_41.ao
 	-rm -f output/test_teensy_41.elf output/test_teensy_41.hex
 	mkdir -p output
 	mv test_teensy_41.elf output/test_teensy_41.elf
