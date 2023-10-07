@@ -1,5 +1,5 @@
 # teensy4vfi
-Teensy 4.0 firmware for Voltage Fault Injection research
+Teensy 4.0/4.1 firmware for Voltage Fault Injection research
 
 ## note
 This project is in its very early stages, it also serves as a way for me to learn """white box""" SoC baremetal programming.<br>
@@ -17,8 +17,6 @@ Some code might make no sense and/or be overcomplicated, suggestions and non-C++
  - More RPC commands
 
 ### Known BUGs
- - uart artifacts during glitch_prep_uart (2+) after ccm_set_core_clkf causing RPC script error
-   - we reset the UART controller here, maybe add some TC delay?
  - PC RPC script skipping, cutting return codes
    - timing issues, very low priority 
 
