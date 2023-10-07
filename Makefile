@@ -31,9 +31,6 @@ output/test_teensy_41.hex: test_teensy_41.hex
 %.hex: %.elf
 	$(OBJCOPY) -O ihex $^ $@
 
-# %_teensy_40.hex: %_teensy_40.elf
-# 	$(OBJCOPY) -O ihex $^ $@
-
 test_teensy_40.elf: $(OBJS_TEENSY_40)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) -T linker_teensy_40.x 
 
@@ -42,9 +39,6 @@ test_teensy_40.elf: $(OBJS_TEENSY_40)
 
 %_teensy_40.ao: %.sx
 	$(CC) $(ASFLAGS) -DTEENSY_40 -c $< -o $@
-
-# %_teensy_41.hex: %_teensy_41.elf
-# 	$(OBJCOPY) -O ihex $^ $@
 
 test_teensy_41.elf: $(OBJS_TEENSY_41)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) -T linker_teensy_41.x 
